@@ -1,4 +1,4 @@
-using HeroApi.Models;
+using HeroApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

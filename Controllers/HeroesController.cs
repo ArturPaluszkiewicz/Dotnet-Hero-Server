@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using HeroApi.Entities;
 using HeroApi.Models;
 
 namespace HeroApi.Controllers
@@ -22,14 +23,14 @@ namespace HeroApi.Controllers
 
         // GET: api/Heroes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hero>>> GetHeroes()
+        public async Task<ActionResult<IEnumerable<HeroDTO>>> GetHeroes()
         {
-            return await _context.Heroes.ToListAsync();
+            return await _context.Heroes.Select(h => heroToHeroDto(h)).ToListAsync();
         }
 
         // GET: api/Heroes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Hero>> GetHero(long id)
+        public async Task<ActionResult<HeroDTO>> GetHero(long id)
         {
             var hero = await _context.Heroes.FindAsync(id);
 
@@ -37,21 +38,26 @@ namespace HeroApi.Controllers
             {
                 return NotFound();
             }
+            return heroToHeroDto(hero);
 
-            return hero;
         }
 
         // PUT: api/Heroes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHero(long id, Hero hero)
+        public async Task<IActionResult> PutHero(long id, HeroDTO heroDTO)
         {
-            if (id != hero.Id)
+            if (id != heroDTO.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(hero).State = EntityState.Modified;
+            var hero = await _context.Heroes.FindAsync(id);
+            if (hero == null){
+                return NotFound();
+            }
+
+            hero.Name = heroDTO.Name;
 
             try
             {
@@ -75,8 +81,12 @@ namespace HeroApi.Controllers
         // POST: api/Heroes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Hero>> PostHero(Hero hero)
+        public async Task<ActionResult<Hero>> PostHero(HeroDTO heroDTO)
         {
+            Hero hero = new Hero{
+                Name = heroDTO.Name
+            };
+
             _context.Heroes.Add(hero);
             await _context.SaveChangesAsync();
 
@@ -103,5 +113,10 @@ namespace HeroApi.Controllers
         {
             return _context.Heroes.Any(e => e.Id == id);
         }
+        private static HeroDTO heroToHeroDto(Hero hero) =>
+            new HeroDTO{
+                Id = hero.Id,
+                Name = hero.Name
+            };
     }
 }

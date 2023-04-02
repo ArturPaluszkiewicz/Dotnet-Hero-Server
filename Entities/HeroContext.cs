@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 
-namespace HeroApi.Models
+namespace HeroApi.Entities
 {
     public class HeroContext : DbContext
     {
