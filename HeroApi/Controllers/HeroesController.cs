@@ -15,12 +15,10 @@ namespace HeroApi.Controllers
     [ApiController]
     public class HeroesController : ControllerBase
     {
-        private readonly HeroContext _context;
         private readonly HeroesService _heroesService;
 
-        public HeroesController(HeroContext context, HeroesService heroesService)
+        public HeroesController(HeroesService heroesService)
         {
-            _context = context;
             _heroesService = heroesService;
         }
 
@@ -85,11 +83,6 @@ namespace HeroApi.Controllers
                 return NotFound();
             }
             return NoContent();
-        }
-
-        private bool HeroExists(long id)
-        {
-            return _context.Heroes.Any(e => e.Id == id);
         }
         private static HeroDTO heroToHeroDto(Hero hero) =>
             new HeroDTO{
