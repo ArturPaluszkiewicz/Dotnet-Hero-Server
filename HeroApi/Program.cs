@@ -1,4 +1,5 @@
 using HeroApi.Entities;
+using HeroApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<HeroContext>(opt => 
         opt.UseInMemoryDatabase("HeroList"));
+builder.Services.AddScoped<HeroesService>();
 
 
 var app = builder.Build();

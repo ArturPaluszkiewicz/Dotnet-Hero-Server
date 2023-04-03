@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HeroApi.Entities;
 using HeroApi.Models;
+using HeroApi.Services;
 
 namespace HeroApi.Controllers
 {
@@ -15,97 +16,74 @@ namespace HeroApi.Controllers
     public class HeroesController : ControllerBase
     {
         private readonly HeroContext _context;
+        private readonly HeroesService _heroesService;
 
-        public HeroesController(HeroContext context)
+        public HeroesController(HeroContext context, HeroesService heroesService)
         {
             _context = context;
+            _heroesService = heroesService;
         }
 
         // GET: api/Heroes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HeroDTO>>> GetHeroes()
+        public ActionResult<IEnumerable<HeroDTO>> GetHeroes()
         {
-            return await _context.Heroes.Select(h => heroToHeroDto(h)).ToListAsync();
+           // return await _context.Heroes.Select(h => heroToHeroDto(h)).ToListAsync();
+           var heroes = _heroesService.getAllHeroes();
+            return Ok(heroes);
         }
 
-        // GET: api/Heroes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<HeroDTO>> GetHero(long id)
+        public ActionResult<HeroDTO> GetHero(long id)
         {
-            var hero = await _context.Heroes.FindAsync(id);
+           // var hero = await _context.Heroes.FindAsync(id);
 
-            if (hero == null)
+            var heroDTO = _heroesService.getById(id);
+
+            if (heroDTO == null)
             {
                 return NotFound();
             }
-            return heroToHeroDto(hero);
+            return Ok(heroDTO);
 
         }
 
-        // PUT: api/Heroes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHero(long id, HeroDTO heroDTO)
+        public IActionResult PutHero(long id, HeroDTO heroDTO)
         {
             if (id != heroDTO.Id)
             {
                 return BadRequest();
             }
-
-            var hero = await _context.Heroes.FindAsync(id);
-            if (hero == null){
+            bool isUpdated= _heroesService.updateHero(id, heroDTO);
+            if(!isUpdated){
                 return NotFound();
             }
-
-            hero.Name = heroDTO.Name;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HeroExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
             return NoContent();
         }
 
         // POST: api/Heroes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Hero>> PostHero(HeroDTO heroDTO)
+        public ActionResult<Hero> PostHero(HeroDTO heroDTO)
         {
-            Hero hero = new Hero{
-                Name = heroDTO.Name
-            };
 
-            _context.Heroes.Add(hero);
-            await _context.SaveChangesAsync();
+            if (heroDTO.Name == null){
+                return BadRequest();
+            }
+            long newHeroId = _heroesService.createHero(heroDTO);
 
-            return CreatedAtAction(nameof(GetHero), new { id = hero.Id }, hero);
+            return Created($"/api/restaurant/{newHeroId}",null);
         }
 
         // DELETE: api/Heroes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHero(long id)
+        public IActionResult DeleteHero(long id)
         {
-            var hero = await _context.Heroes.FindAsync(id);
-            if (hero == null)
-            {
+            bool isDeleted = _heroesService.deleteHero(id);
+            if(!isDeleted){
                 return NotFound();
             }
-
-            _context.Heroes.Remove(hero);
-            await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
