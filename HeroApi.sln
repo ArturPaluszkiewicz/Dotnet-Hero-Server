@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeroApi", "HeroApi\HeroApi.csproj", "{B2627FCC-8139-4157-B4CD-B38005418E4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeroApi.Tests", "HeroApi.Tests\HeroApi.Tests.csproj", "{2514AECB-07EC-4568-A526-A9D01037D92B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2627FCC-8139-4157-B4CD-B38005418E4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2627FCC-8139-4157-B4CD-B38005418E4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2627FCC-8139-4157-B4CD-B38005418E4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2627FCC-8139-4157-B4CD-B38005418E4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2514AECB-07EC-4568-A526-A9D01037D92B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2514AECB-07EC-4568-A526-A9D01037D92B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2514AECB-07EC-4568-A526-A9D01037D92B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2514AECB-07EC-4568-A526-A9D01037D92B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
