@@ -3,7 +3,7 @@ using HeroApi.Models;
 
 namespace HeroApi.Services
 {
-    public class HeroesService
+    public class HeroesService : IHeroesService
     {
         private readonly HeroContext _context;
         public HeroesService(HeroContext context)

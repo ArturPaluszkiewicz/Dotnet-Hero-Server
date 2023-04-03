@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<HeroContext>(opt => 
         opt.UseInMemoryDatabase("HeroList"));
-builder.Services.AddScoped<HeroesService>();
+builder.Services.AddScoped<IHeroesService, HeroesService>();
 
 
 var app = builder.Build();

@@ -15,9 +15,9 @@ namespace HeroApi.Controllers
     [ApiController]
     public class HeroesController : ControllerBase
     {
-        private readonly HeroesService _heroesService;
+        private readonly IHeroesService _heroesService;
 
-        public HeroesController(HeroesService heroesService)
+        public HeroesController(IHeroesService heroesService)
         {
             _heroesService = heroesService;
         }
