@@ -26,7 +26,6 @@ namespace HeroApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<HeroDTO>> GetHeroes()
         {
-           // return await _context.Heroes.Select(h => heroToHeroDto(h)).ToListAsync();
            var heroes = _heroesService.getAllHeroes();
             return Ok(heroes);
         }
@@ -36,7 +35,7 @@ namespace HeroApi.Controllers
         {
            // var hero = await _context.Heroes.FindAsync(id);
 
-            var heroDTO = _heroesService.getById(id);
+            var heroDTO = _heroesService.getHeroById(id);
 
             if (heroDTO == null)
             {
@@ -53,7 +52,7 @@ namespace HeroApi.Controllers
             {
                 return BadRequest();
             }
-            bool isUpdated= _heroesService.updateHero(id, heroDTO);
+            bool isUpdated = _heroesService.updateHero(id, heroDTO);
             if(!isUpdated){
                 return NotFound();
             }
@@ -63,7 +62,7 @@ namespace HeroApi.Controllers
         // POST: api/Heroes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult<Hero> PostHero(HeroDTO heroDTO)
+        public ActionResult<string> PostHero(HeroDTO heroDTO)
         {
 
             if (heroDTO.Name == null){
@@ -71,7 +70,7 @@ namespace HeroApi.Controllers
             }
             long newHeroId = _heroesService.createHero(heroDTO);
 
-            return Created($"/api/restaurant/{newHeroId}",null);
+            return Created($"/api/heroes/{newHeroId}",null);
         }
 
         // DELETE: api/Heroes/5
