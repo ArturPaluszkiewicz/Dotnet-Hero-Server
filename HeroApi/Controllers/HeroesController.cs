@@ -77,7 +77,7 @@ namespace HeroApi.Controllers
         // POST: api/Heroes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public ActionResult<string> PostHero(HeroDTO heroDTO)
+        public ActionResult<HeroDTO> PostHero(HeroDTO heroDTO)
         {
 
             if (heroDTO.Name == null){

@@ -79,22 +79,24 @@ public class HeroesControllerTest
         //act
         var result = controller.PostHero(new HeroDTO{});
         //assert
-        var actionResult = Assert.IsType<ActionResult<string>>(result);
+        var actionResult = Assert.IsType<ActionResult<HeroDTO>>(result);
         Assert.IsType<BadRequestResult>(actionResult.Result);
     }
     [Fact]
     public void PostHero_ReturnCreated()
     {
         //arrange
+        int heroId = 5;
+        HeroDTO heroDTO = getMockedDTOHero(heroId);
         var mocHeroesService = new Mock<IHeroesService>();
-        mocHeroesService.Setup(s => s.createHero(getMockedDTOHero(5))).Returns(5);
+        mocHeroesService.Setup(s => s.createHero(heroDTO)).Returns(heroDTO);
         var controller = new HeroesController(mocHeroesService.Object);
         //act
-        var result = controller.PostHero(getMockedDTOHero(5));
+        var result = controller.PostHero(heroDTO);
         //assert
-        var actionResult = Assert.IsType<ActionResult<string>>(result);
+        var actionResult = Assert.IsType<ActionResult<HeroDTO>>(result);
         var createdResult = Assert.IsType<CreatedResult>(actionResult.Result);
-        //Assert.Equal("/api/heroes/5",createdResult.Location);
+        Assert.Equal("/api/heroes/5",createdResult.Location);
     }
     [Fact]
     public void PutHero_BadRequestResult_ForNotMatchingGivenIdWhithIdFromGivenHeroDto()
@@ -111,11 +113,13 @@ public class HeroesControllerTest
     public void PutHero_NotFound_WhenThereIsNoHeroForGivenId()
     {
         //arrange
+        int heroId = 5;
+        HeroDTO heroDTO = getMockedDTOHero(heroId);
         var mocHeroesService = new Mock<IHeroesService>();
-        mocHeroesService.Setup(s => s.updateHero(5,getMockedDTOHero(5))).Returns(false);
+        mocHeroesService.Setup(s => s.updateHero(heroId, heroDTO)).Returns(false);
         var controller = new HeroesController(mocHeroesService.Object);
         //act
-        var result = controller.PutHero(5,getMockedDTOHero(5));
+        var result = controller.PutHero(heroId,heroDTO);
         //assert
         Assert.IsType<NotFoundResult>(result);
 
@@ -124,13 +128,15 @@ public class HeroesControllerTest
     public void PutHero_ReturnNoContent_AfterSuccesCreatHero()
     { 
     //arrange
+    int heroId = 5;
+    HeroDTO heroDTO = getMockedDTOHero(heroId);
     var mocHeroesService = new Mock<IHeroesService>();
-    mocHeroesService.Setup(s => s.updateHero(5,getMockedDTOHero(5))).Returns(true);
+    mocHeroesService.Setup(s => s.updateHero(heroId,heroDTO)).Returns(true);
     var controller = new HeroesController(mocHeroesService.Object);
     //act
-    var result = controller.PutHero(5,getMockedDTOHero(5));
+    var result = controller.PutHero(heroId,heroDTO);
     //assert
-   // Assert.IsType<NoContentResult>(result);
+    Assert.IsType<NoContentResult>(result);
     }
     [Fact]
     public void DeleteHero_ReturnNotFound_ForNonHeroWithGivenId()
