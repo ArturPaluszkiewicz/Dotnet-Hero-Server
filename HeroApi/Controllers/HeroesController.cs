@@ -83,9 +83,9 @@ namespace HeroApi.Controllers
             if (heroDTO.Name == null){
                 return BadRequest();
             }
-            long newHeroId = _heroesService.createHero(heroDTO);
+            var newHero = _heroesService.createHero(heroDTO);
 
-            return Created($"/api/heroes/{newHeroId}",null);
+            return Created($"/api/heroes/{newHero.Id}",newHero);
         }
 
         // DELETE: api/Heroes/5

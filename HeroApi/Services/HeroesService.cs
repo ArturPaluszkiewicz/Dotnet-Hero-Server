@@ -31,7 +31,7 @@ namespace HeroApi.Services
             return heroToHeroDto(hero);
         }
     
-        public long createHero(HeroDTO heroDTO)
+        public HeroDTO createHero(HeroDTO heroDTO)
         {
             var hero = new Hero{
                 Name = heroDTO.Name
@@ -39,7 +39,7 @@ namespace HeroApi.Services
             _context.Heroes.Add(hero);
             _context.SaveChanges();
 
-            return hero.Id;
+            return heroToHeroDto(hero);
         }
         public bool updateHero(long id, HeroDTO heroDTO)
         {
