@@ -24,12 +24,27 @@ namespace HeroApi.Controllers
 
         // GET: api/Heroes
         [HttpGet]
-        public ActionResult<IEnumerable<HeroDTO>> GetHeroes()
+        public ActionResult<IEnumerable<HeroDTO>> GetHeroes(string? name)
         {
-           var heroes = _heroesService.getAllHeroes();
-            return Ok(heroes);
-        }
+            if(name!=null){
+                var heroes = _heroesService.getHeroesByName(name);
+                Console.Write(name);
+                return Ok(heroes);
 
+            }
+            else{
+                var heroes = _heroesService.getAllHeroes();
+                Console.Write("no name");
+                return Ok(heroes);
+            }
+        }
+        // [HttpGet()]
+        // public ActionResult<IEnumerable<HeroDTO>> GetHeroes(string name)
+        // {
+        //    var heroes = _heroesService.getHeroesByName("Wizard Lizard");
+        //    Console.Write("asd2");
+        //     return Ok(heroes);
+        // }
         [HttpGet("{id}")]
         public ActionResult<HeroDTO> GetHero(long id)
         {

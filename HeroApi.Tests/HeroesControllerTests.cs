@@ -16,7 +16,7 @@ public class HeroesControllerTest
         mocHeroesService.Setup(service => service.getAllHeroes()).Returns(getMockedDTOHeroesList());
         var controller = new HeroesController(mocHeroesService.Object);
         //act
-        var result = controller.GetHeroes();
+        var result = controller.GetHeroes(null);
         //assert
         var actionResult = Assert.IsType<ActionResult<IEnumerable<HeroDTO>>>(result);
         var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
@@ -24,6 +24,23 @@ public class HeroesControllerTest
         var hero = returnValue.FirstOrDefault();
         Assert.Equal("Captain America",hero.Name);
     }
+    [Fact]
+    public void GetHeroesWhitNameParametr_ReturnCorrectResult()
+    {
+        //arrange
+        var mocHeroesService = new Mock<IHeroesService>();
+        mocHeroesService.Setup(service => service.getHeroesByName("Captain America")).Returns(getMockedDTOHeroesList());
+        var controller = new HeroesController(mocHeroesService.Object);
+        //act
+        var result = controller.GetHeroes("Captain America");
+        //assert
+        var actionResult = Assert.IsType<ActionResult<IEnumerable<HeroDTO>>>(result);
+        var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+        var returnValue = Assert.IsType<List<HeroDTO>>(okResult.Value);
+        var hero = returnValue.FirstOrDefault();
+        Assert.Equal("Captain America",hero.Name);
+    }
+
     [Fact]
     public void GetHeroById_ReturnNotFoundResult_ForNonExistingHero()
     {
